@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora PPR 2026</title>
+    <!-- Usamos o Tailwind para o visual ficar bonito automaticamente -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-5">
+    <div class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-md">
+        <h2 class="text-2xl font-bold mb-6 text-center text-blue-700">Calculadora de PPR</h2>
+        
+        <div class="space-y-4">
+            <!-- Salário -->
+            <div>
+                <label class="block text-sm font-semibold">Salário Base (R$):</label>
+                <input type="number" id="salario" value="3312" class="w-full border p-2 rounded">
+            </div>
+
+            <!-- Target -->
+            <div>
+                <label class="block text-sm font-semibold">Target (Multiplicador):</label>
+                <input type="number" id="target" value="1.5" step="0.1" class="w-full border p-2 rounded">
+            </div>
+
+            <!-- Meta Empresa -->
+            <div>
+                <label class="block text-sm font-semibold">Atingimento Meta Empresa (%):</label>
+                <input type="number" id="meta" value="106.5" class="w-full border p-2 rounded">
+            </div>
+
+            <!-- Meses Trabalhados -->
+            <div>
+                <label class="block text-sm font-semibold">Meses Trabalhados (no ano):</label>
+                <input type="number" id="meses" value="12" max="12" class="w-full border p-2 rounded">
+            </div>
+
+            <!-- Sanções -->
+            <div>
+                <label class="block text-sm font-semibold">Sanções/Descontos (%):</label>
+                <input type="number" id="sancoes" value="0" class="w-full border p-2 rounded">
+            </div>
+
+            <button onclick="calcular()" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition">
+                Calcular Valor do PPR
+            </button>
+        </div>
+
+        <!-- Onde o resultado aparece -->
+        <div id="resultadoBox" class="mt-8 p-4 bg-green-50 rounded-lg border border-green-200 hidden">
+            <p class="text-center text-gray-600">O valor estimado é:</p>
+            <h3 id="valorFinal" class="text-3xl font-black text-center text-green-700"></h3>
+        </div>
+    </div>
+
+    <script>
+        function calcular() {
+            // Pegando os valores que o usuário digitou
+            const salario = parseFloat(document.getElementById('salario').value);
+            const target = parseFloat(document.getElementById('target').value);
+            const meta = parseFloat(document.getElementById('meta').value) / 100;
+            const meses = parseInt(document.getElementById('meses').value);
+            const sancoes = parseFloat(document.getElementById('sancoes').value) / 100;
+
+            // Lógica do Cálculo
+            // 1. Salário x Multiplicador
+            let base = salario * target;
+            
+            // 2. Aplica a meta da empresa
+            let comMeta = base * meta;
+            
+            // 3. Proporcional aos meses (ex: 6 meses/12)
+            let proporcional = comMeta * (meses / 12);
+            
+            // 4. Subtrai as sanções
+            let total = proporcional * (1 - sancoes);
+
+            // Mostrar na tela
+            const box = document.getElementById('resultadoBox');
+            const h3 = document.getElementById('valorFinal');
+            
+            h3.innerText = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            box.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
