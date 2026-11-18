@@ -113,9 +113,7 @@ for(const id of ['salario','salario-dobra','adicionais'])document.getElementById
 <label>R.E.<input name="re" type="text" inputmode="numeric" maxlength="30" required></label>
 <label>Equipe atual<select name="equipe" required><option value="">Selecione</option><option>Equipe A</option><option>Equipe B</option><option>Equipe C</option><option>Equipe D</option><option>Equipe E</option></select></label>
 <label>Gestor<input name="gestor" maxlength="100" required></label>
-<label class="troca-linha">Nome do colega com quem deseja trocar<input name="colega" maxlength="100" required></label>
-<label>R.E. do colega (opcional)<input name="colegaRE" type="text" inputmode="numeric" maxlength="30"></label>
-<label>Equipe do colega<select name="colegaEquipe" required><option value="">Selecione</option><option>Equipe A</option><option>Equipe B</option><option>Equipe C</option><option>Equipe D</option><option>Equipe E</option></select></label>
+
 <label>Horário atual<select name="horarioAtual" required><option value="">Selecione</option><option>01h–07h</option><option>07h–13h</option><option>13h–19h</option><option>19h–01h</option></select></label>
 <label>Horário desejado<select name="horarioDesejado" required><option value="">Selecione</option><option>01h–07h</option><option>07h–13h</option><option>13h–19h</option><option>19h–01h</option></select></label>
 <label>Data de início<input name="inicio" type="date" required></label>
@@ -132,7 +130,7 @@ for(const id of ['salario','salario-dobra','adicionais'])document.getElementById
 'use strict';
 const abrir=document.getElementById('abrir-troca-horario'),janela=document.getElementById('troca-horario'),form=document.getElementById('troca-form'),salvas=document.getElementById('troca-salvas'),status=document.getElementById('troca-status'),compartilhar=document.getElementById('troca-compartilhar'),resumo=document.getElementById('troca-resumo'),whatsapp=document.getElementById('troca-whatsapp');
 const chave='meu-ppr-trocas-v1';
-const campos=['nome','re','equipe','gestor','colega','colegaRE','colegaEquipe','horarioAtual','horarioDesejado','inicio','dias','motivo'];
+const campos=['nome','re','equipe','gestor','horarioAtual','horarioDesejado','inicio','dias','motivo'];
 let atual=null;
 function avisar(texto,erro){status.textContent=texto;status.classList.toggle('troca-erro',!!erro)}
 function ler(){const raw=localStorage.getItem(chave);if(!raw)return [];const lista=JSON.parse(raw);if(!Array.isArray(lista)||lista.some(x=>!x||typeof x.id!=='string'||!x.dados||typeof x.dados!=='object'))throw new Error('Formato inválido');return lista}
@@ -141,7 +139,7 @@ function mensagem(d){
 const data=d.inicio.split('-').reverse().join('/');
 return ['SOLICITAÇÃO DE TROCA DE HORÁRIO','',
 'Nome: '+d.nome,'R.E.: '+d.re,'Equipe atual: '+d.equipe,'Gestor: '+d.gestor,'',
-'Colega da troca: '+d.colega,...(d.colegaRE?['R.E. do colega: '+d.colegaRE]:[]),'Equipe do colega: '+d.colegaEquipe,'',
+
 'Horário atual: '+d.horarioAtual,'Horário desejado: '+d.horarioDesejado,'Data de início: '+data,'Quantidade de dias: '+d.dias,'',
 'Motivo: '+d.motivo,'','Solicitação sujeita à aprovação dos gestores.'].join('\n');
 }
