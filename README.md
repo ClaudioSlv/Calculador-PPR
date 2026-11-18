@@ -1,2 +1,21 @@
-![1000041112](https://github.com/user-attachments/assets/4dc1d0ad-4fdf-42c6-890a-0dc40e795809)
-https://private-user-images.githubusercontent.com/255515107/537536503-4dc1d0ad-4fdf-42c6-890a-0dc40e795809.jpg?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Njg4MjEzMDgsIm5iZiI6MTc2ODgyMTAwOCwicGF0aCI6Ii8yNTU1MTUxMDcvNTM3NTM2NTAzLTRkYzFkMGFkLTRmZGYtNDJjNi04OTBhLTBkYzQwZTc5NTgwOS5qcGc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYwMTE5JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MDExOVQxMTEwMDhaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1kYzJhZmQ1ODdjNWI5NTdhNDdjMjFmYmIyNjQwNGM1ZWYyYmNkMzAzNGUyYjUzYjc4ZTYyZWRhMTMxNTU1YWJmJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.jVKqkxmFGByY-nSTmgaqz_MPDZnx580OWT5WRTQNXiQ
+# Meu PPR e Dobras
+
+Aplicação publicada em https://calculador-ppr.claudio1748.workers.dev/.
+
+Código sincronizado da versão em produção em 18/11/2026, incluindo cálculo de PPR, dobras, escala e instalação PWA com ícones Android e iPhone. O ícone Android usa `any maskable` para preencher a área do ícone.
+
+## Arquivos
+
+- `worker.mjs`: código completo do Worker em produção, incluindo HTML, manifest, service worker e imagens incorporadas.
+- `index.html`: HTML extraído da mesma versão para consulta e edição. A publicação usa o HTML incorporado em `worker.mjs`; mantenha ambos sincronizados ao editar.
+- `wrangler.jsonc`: configuração mínima de implantação no Cloudflare Workers.
+
+## Publicação
+
+Com Node.js e acesso à conta Cloudflare:
+
+```sh
+npx wrangler deploy
+```
+
+O código contém uma rota opcional `/api/config` que consulta `env.DB`. O Worker consultado não possui bindings configurados; sem um binding D1 chamado `DB`, essa rota retorna indisponibilidade. Dados de banco e credenciais não fazem parte deste repositório.
