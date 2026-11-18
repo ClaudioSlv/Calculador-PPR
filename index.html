@@ -118,7 +118,7 @@ for(const id of ['salario','salario-dobra','adicionais'])document.getElementById
 <label>Horário desejado<select name="horarioDesejado" required><option value="">Selecione</option><option>01h–07h</option><option>07h–13h</option><option>13h–19h</option><option>19h–01h</option></select></label>
 <label>Data de início<input name="inicio" type="date" required></label>
 <label>Quantidade de dias<input name="dias" type="number" min="1" max="365" step="1" inputmode="numeric" required></label>
-<label class="troca-linha">Motivo da solicitação<textarea name="motivo" rows="3" maxlength="1000" required></textarea></label>
+<label class="troca-linha">Motivo da solicitação — obrigatório<textarea name="motivo" rows="3" maxlength="1000" required aria-describedby="troca-motivo-ajuda" placeholder="Explique por que você precisa trocar de horário."></textarea><span id="troca-motivo-ajuda" class="hint">Sem informar o motivo, não é possível salvar nem compartilhar a solicitação.</span></label>
 </div>
 <p id="troca-status" role="status" aria-live="polite"></p>
 <button type="submit">Salvar solicitação</button>
@@ -149,10 +149,12 @@ abrir.addEventListener('click',()=>{if(!janela.open){janela.showModal();listar()
 document.getElementById('troca-fechar').addEventListener('click',()=>janela.close());
 janela.addEventListener('close',()=>abrir.focus());
 janela.addEventListener('click',event=>{if(event.target!==janela)return;const r=janela.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)janela.close()});
+form.addEventListener('invalid',()=>{compartilhar.hidden=true;whatsapp.removeAttribute('href');if(!form.elements.namedItem('motivo').value.trim())avisar('Informe o motivo da troca para salvar e compartilhar a solicitação.',true)},true);
 form.addEventListener('input',()=>{compartilhar.hidden=true;whatsapp.removeAttribute('href');avisar('Alterações ainda não salvas.',false)});
 form.addEventListener('submit',event=>{
 event.preventDefault();
 const dados={};campos.forEach(c=>{const el=form.elements.namedItem(c);el.value=el.value.trim();dados[c]=el.value});
+if(!dados.motivo){compartilhar.hidden=true;whatsapp.removeAttribute('href');avisar('Informe o motivo da troca para salvar e compartilhar a solicitação.',true);form.elements.namedItem('motivo').focus();return}
 if(!form.reportValidity())return;
 if(dados.horarioAtual===dados.horarioDesejado){avisar('Selecione um horário desejado diferente do horário atual.',true);form.elements.namedItem('horarioDesejado').focus();return}
 try{
