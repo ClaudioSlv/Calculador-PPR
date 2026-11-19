@@ -18,11 +18,11 @@ body:has(#painel-escala:not([hidden])) footer{color:#d1d1d1}
 /* Botão e janela Troca de Horário */
 .escala-cabecalho{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
 .escala-cabecalho h2{margin:0;min-width:0}
-#abrir-troca-horario{width:auto;min-width:148px;min-height:64px;padding:10px 14px;background:#c8dd54;color:#153e44;border:2px solid #9caf34;border-radius:14px;box-shadow:0 3px 0 #879927;display:flex;align-items:center;justify-content:center;gap:10px;flex-shrink:0;font-size:14px;font-weight:750;line-height:1.2}
+#abrir-troca-horario{width:auto;min-width:128px;min-height:56px;padding:8px 10px;background:linear-gradient(180deg,#e6f58b 0%,#c8dd54 48%,#b1c83b 100%);color:#153e44;border:2px solid #9caf34;border-radius:14px;box-shadow:inset 0 2px 2px #ffffffb3,inset 0 -2px 2px #849b2b80,0 5px 0 #718824,0 8px 12px #0005;display:flex;align-items:center;justify-content:center;gap:7px;flex-shrink:0;font-size:13px;font-weight:750;line-height:1.2}
 #abrir-troca-horario span{max-width:72px;text-align:left}
 @media(max-width:420px){.escala-cabecalho{flex-wrap:wrap}#abrir-troca-horario{margin-left:auto}}
-#abrir-troca-horario img{width:48px;height:48px;object-fit:contain;display:block}
-#abrir-troca-horario:hover{background:#d8eb72}#abrir-troca-horario:active{transform:translateY(2px);box-shadow:0 1px 0 #879927}
+#abrir-troca-horario img{width:38px;height:38px;object-fit:contain;display:block}
+#abrir-troca-horario:hover{filter:brightness(1.06)}#abrir-troca-horario:active{transform:translateY(4px);box-shadow:inset 0 2px 4px #71882466,0 1px 0 #718824,0 3px 5px #0004}
 #abrir-troca-horario:focus-visible,#troca-horario button:focus-visible{outline:3px solid #c8dd54;outline-offset:3px}
 #troca-horario{box-sizing:border-box;width:min(420px,calc(100% - 32px));max-height:calc(100dvh - 32px);overflow:auto;padding:24px;border:2px solid #bccdce;border-radius:20px;background:#fff;color:#163b40}
 #troca-horario::backdrop{background:rgba(0,0,0,.65)}
