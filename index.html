@@ -139,15 +139,16 @@ let atual=null;
 function avisar(texto,erro){status.textContent=texto;status.classList.toggle('troca-erro',!!erro)}
 function ler(){const raw=localStorage.getItem(chave);if(!raw)return [];const lista=JSON.parse(raw);if(!Array.isArray(lista)||lista.some(x=>!x||typeof x.id!=='string'||!x.dados||typeof x.dados!=='object'))throw new Error('Formato inválido');return lista}
 function listar(){try{const lista=ler();salvas.replaceChildren(new Option('Nova solicitação',''));lista.slice().reverse().forEach(item=>{salvas.add(new Option((item.dados.inicio||'Sem data')+' — '+(item.dados.nome||'Solicitação'),item.id))});salvas.value=atual||'';return true}catch(e){avisar('Não foi possível acessar as solicitações salvas neste navegador. Nenhum registro foi alterado.',true);return false}}
-function mensagem(d){
+function mensagem(d,negrito=false){
+const valor=v=>negrito?String(v).split(/\r?\n/).map(l=>l.trim()?'*'+l.replace(/\*/g,'')+'*':l).join('\n'):String(v);
 const data=d.inicio.split('-').reverse().join('/');
 return ['SOLICITAÇÃO DE TROCA DE HORÁRIO','',
-'Nome: '+d.nome,'R.E.: '+d.re,'Equipe atual: '+d.equipe,'Gestor: '+d.gestor,'',
+'Nome: '+valor(d.nome),'R.E.: '+valor(d.re),'Equipe atual: '+valor(d.equipe),'Gestor: '+valor(d.gestor),'',
 
-'Horário atual: '+d.horarioAtual,'Horário desejado: '+d.horarioDesejado,'Data de início: '+data,'Quantidade de dias: '+d.dias,'',
-'Motivo: '+d.motivo,'','Solicitação sujeita à aprovação dos gestores.'].join('\n');
+'Horário atual: '+valor(d.horarioAtual),'Horário desejado: '+valor(d.horarioDesejado),'Data de início: '+valor(data),'Quantidade de dias: '+valor(d.dias),'',
+'Motivo: '+valor(d.motivo),'','Solicitação sujeita à aprovação dos gestores.'].join('\n');
 }
-function mostrar(d){const texto=mensagem(d);resumo.textContent=texto;whatsapp.href='https://api.whatsapp.com/send?text='+encodeURIComponent(texto);compartilhar.hidden=false}
+function mostrar(d,rolar=false){resumo.textContent=mensagem(d);whatsapp.href='https://api.whatsapp.com/send?text='+encodeURIComponent(mensagem(d,true));compartilhar.hidden=false;if(rolar)requestAnimationFrame(()=>{compartilhar.setAttribute('tabindex','-1');compartilhar.focus({preventScroll:true});janela.scrollTo({top:janela.scrollTop+compartilhar.getBoundingClientRect().top-janela.getBoundingClientRect().top-20,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'})})}
 function nova(){atual=null;form.reset();salvas.value='';compartilhar.hidden=true;whatsapp.removeAttribute('href');avisar('',false)}
 abrir.addEventListener('click',()=>{if(!janela.open){janela.showModal();listar()}});
 document.getElementById('troca-fechar').addEventListener('click',()=>janela.close());
@@ -166,7 +167,7 @@ const lista=ler(),id=atual||('troca-'+Date.now()+'-'+Math.random().toString(36).
 const item={id,dados,salvoEm:new Date().toISOString()},i=lista.findIndex(x=>x.id===id);
 if(i>=0)lista[i]=item;else lista.push(item);
 localStorage.setItem(chave,JSON.stringify(lista));
-atual=id;listar();mostrar(dados);avisar('Solicitação salva neste aparelho. Agora você pode compartilhar com o gestor.',false);
+atual=id;listar();mostrar(dados,true);avisar('Solicitação salva neste aparelho. Agora você pode compartilhar com o gestor.',false);
 }catch(e){compartilhar.hidden=true;whatsapp.removeAttribute('href');avisar('Não foi possível salvar. Verifique se o navegador permite armazenamento e tente novamente.',true)}
 });
 salvas.addEventListener('change',()=>{if(!salvas.value){nova();return}try{const item=ler().find(x=>x.id===salvas.value);if(!item)throw new Error('Não encontrada');campos.forEach(c=>{form.elements.namedItem(c).value=typeof item.dados[c]==='string'?item.dados[c]:''});atual=item.id;mostrar(item.dados);avisar('Solicitação salva carregada.',false)}catch(e){compartilhar.hidden=true;whatsapp.removeAttribute('href');avisar('Não foi possível abrir esta solicitação.',true)}});
